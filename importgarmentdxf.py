@@ -25,7 +25,7 @@ def getEdgeVerts(obj):
         return obj.data.vertices
     
 def getMinMaxLocation():
-    obj = bpy.data.objects["Collision"] #Hard coding
+    obj = bpy.data.objects["Collision"] 
     verts = getEdgeVerts(obj)
     xMax = 0
     xMin = 0
@@ -54,25 +54,27 @@ def move(obj, minMaxLocation):
     bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY', center='MEDIAN')
     obj.select_set(False)
     obj.scale *= 0.001
-    if 'P0005' in obj.name: #Hard coding BACK
-        obj.rotation_euler.y = degToRad(-90) #Hard coding
-        obj.rotation_euler.z = degToRad(-90) #Hard coding
+
+    if 'P0005' in obj.name:  #BACK
+        obj.rotation_euler.y = degToRad(-90) 
+        obj.rotation_euler.z = degToRad(-90) 
         obj.location = (0, minMaxLocation[1][1], minMaxLocation[1][2])
-    elif 'P0018' in obj.name: #Hard coding FRONT
-        obj.rotation_euler.y = degToRad(-90) #Hard coding
-        obj.rotation_euler.z = degToRad(-90) #Hard coding
+    
+    elif 'P0018' in obj.name:  #FRONT
+        obj.rotation_euler.y = degToRad(-90) 
+        obj.rotation_euler.z = degToRad(-90) 
         obj.location = (0, minMaxLocation[0][1], minMaxLocation[1][2])
-    elif 'P0031' in obj.name: #Hard coding SLEEVE
-        obj.rotation_euler.y = degToRad(-120) #Hard coding
+    
+    elif 'P0031' in obj.name:  #SLEEVE
+        obj.rotation_euler.y = degToRad(-120) 
         obj.location = (minMaxLocation[1][0]/2, 0, minMaxLocation[1][2])
         obj.select_set(True)
         bpy.ops.object.duplicate_move(OBJECT_OT_duplicate={"linked":True, "mode":'TRANSLATION'}, TRANSFORM_OT_translate={"value":(-minMaxLocation[1][0], 0, 0)})
         obj.select_set(False)
         bpy.ops.transform.rotate(value=degToRad(-60), orient_axis='Y')
-        #bpy.ops.object.rotation_euler.y = degToRad(60)
         
-    elif 'P0044' in obj.name: #Hard coding COLLAR
-        obj.rotation_euler.x = degToRad(-90) #Hard coding
+    elif 'P0044' in obj.name:  #COLLAR
+        obj.rotation_euler.x = degToRad(-90) 
         obj.location = (0, minMaxLocation[1][1], minMaxLocation[1][2])
 
 def propSet(obj):
@@ -80,11 +82,7 @@ def propSet(obj):
     obj.data.splines[0].use_cyclic_u = True
     obj.data.twist_mode = 'MINIMUM'
     obj.data.fill_mode = 'BOTH'
-    #obj.editmode_toggle()
 
-def remove(obj):
-    bpy.data.objects.remove(obj)
-    
 def execPreProcess(objects):
     for obj in objects:
         if obj.type == "CURVE":
@@ -93,11 +91,11 @@ def execPreProcess(objects):
             propSet(obj)
             
         elif obj.type == "MESH":
-            if obj.name != 'Collision': #Hard coding
+            if obj.name != 'Collision': 
                 bpy.data.objects.remove(obj)
             continue
         else:
-            remove(obj)
+            bpy.data.objects.remove(obj)
             
 ################ main ######################
 
